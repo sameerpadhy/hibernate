@@ -1,0 +1,51 @@
+Query
+
+Query refers to JPQL/HQL query with syntax similar to SQL generally used to execute DML statements(CRUD operations).
+
+In JPA, you can create a query using entityManager.createQuery(). You can look into API for more detail.
+
+In Hibernate, you use session.createQuery()"
+
+NativeQuery
+
+Native query refers to actual sql queries (referring to actual database objects). These queries are the sql statements which can be directly executed in database using a database client.
+
+JPA : entityManager.createNativeQuery() Hibernate (Non-JPA implementation): session.createSQLQuery()
+
+NamedQuery
+
+Similar to how the constant is defined. NamedQuery is the way you define your query by giving it a name. You could define this in mapping file in hibernate or also using annotations at entity level.
+
+TypedQuery
+
+TypedQuery gives you an option to mention the type of entity when you create a query and therefore any operation thereafter does not need an explicit cast to the intended type. Whereas the normal Query API does not return the exact type of Object you expect and you need to cast
+
+
+---------------------------
+
+ @Query:-
+Ste p1:- Only 1 step
+CityRepository-->We have the query.
+
+public interface CityRepository extends CrudRepository<City, Long> {
+
+    @Query("select c from City c where c.name like %?1")
+    List<City> findByNameEndsWith(String chars);
+}
+
+NamedQuery:-
+-------------
+City.java  --> top 
+
+Step 1:-
+@NamedQuery(name = "City.findAllOrderedByNameDescending", 
+query = "SELECT c FROM City c ORDER BY c.name DESC")
+public class City {
+
+
+Ste p2:- 
+
+public interface CityNamedQueryRepository extends CrudRepository<City, Long> {
+
+    List<City> findAllOrderedByNameDescending();
+}
